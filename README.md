@@ -1,6 +1,6 @@
-# CodeAlpha Age Calculator
+# Age Calculator
 
-This is a web-based Age Calculator project created as part of the CodeAlpha Web Development Internship.
+This is a web-based Age Calculator project.
 
 ## Project Overview
 
@@ -30,7 +30,7 @@ The Age Calculator allows users to enter their date of birth and calculates thei
 ## Folder Structure
 
 ```text
-CodeAlpha_AgeCalculator/
+AgeCalculator/
 │
 ├── index.html
 ├── style.css
