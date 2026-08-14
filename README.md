@@ -2,6 +2,9 @@
 
 This is a web-based Age Calculator project.
 
+#Live Demo
+[View Live Project](https://faryam-mujtaba.github.io/Age-Calculator-web/)
+
 ## Project Overview
 
 The Age Calculator allows users to enter their date of birth and calculates their exact age in years, months, and days.
