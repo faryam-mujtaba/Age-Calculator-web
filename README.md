@@ -2,7 +2,6 @@
 
 This is a web-based Age Calculator project.
 
-#Live Demo
 [View Live Project](https://faryam-mujtaba.github.io/Age-Calculator-web/)
 
 ## Project Overview
