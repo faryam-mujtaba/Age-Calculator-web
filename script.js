@@ -7,7 +7,7 @@ const daysElement = document.getElementById("days");
 
 const errorMessage = document.getElementById("errorMessage");
 
-ageForm.addEventListener("submit", async (event) => {
+ageForm.addEventListener("submit", (event) => {
     event.preventDefault();
 
     const birthDateValue = dobInput.value;
@@ -55,31 +55,4 @@ ageForm.addEventListener("submit", async (event) => {
     yearsElement.textContent = years;
     monthsElement.textContent = months;
     daysElement.textContent = days;
-
-    // Send birth date to backend
-    try {
-        const response = await fetch(
-            "http://localhost:5000/api/calculations",
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    birthDate: birthDateValue
-                })
-            }
-        );
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            console.error("Failed to save calculation:", data.message);
-            return;
-        }
-
-        console.log("Calculation saved:", data.message);
-    } catch (error) {
-        console.error("Could not connect to backend:", error);
-    }
 });
