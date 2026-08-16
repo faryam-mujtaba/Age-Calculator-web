@@ -1,37 +1,35 @@
 const ageForm = document.getElementById("ageForm");
 const dobInput = document.getElementById("dob");
+
+const yearsElement = document.getElementById("years");
+const monthsElement = document.getElementById("months");
+const daysElement = document.getElementById("days");
+
 const errorMessage = document.getElementById("errorMessage");
-const resultBox = document.getElementById("result");
 
-const yearsOutput = document.getElementById("years");
-const monthsOutput = document.getElementById("months");
-const daysOutput = document.getElementById("days");
-
-// Set today's date as the maximum selectable date
-const todayDate = new Date().toISOString().split("T")[0];
-dobInput.setAttribute("max", todayDate);
-
-ageForm.addEventListener("submit", function (event) {
+ageForm.addEventListener("submit", async (event) => {
     event.preventDefault();
 
-    const dobValue = dobInput.value;
+    const birthDateValue = dobInput.value;
 
+    // Clear previous error
     errorMessage.textContent = "";
-    resultBox.style.display = "none";
 
-    if (dobValue === "") {
+    if (!birthDateValue) {
         errorMessage.textContent = "Please select your date of birth.";
         return;
     }
 
-    const birthDate = new Date(dobValue);
+    const birthDate = new Date(birthDateValue);
     const today = new Date();
 
+    // Check if birth date is in the future
     if (birthDate > today) {
         errorMessage.textContent = "Date of birth cannot be in the future.";
         return;
     }
 
+    // Calculate age
     let years = today.getFullYear() - birthDate.getFullYear();
     let months = today.getMonth() - birthDate.getMonth();
     let days = today.getDate() - birthDate.getDate();
@@ -39,7 +37,12 @@ ageForm.addEventListener("submit", function (event) {
     if (days < 0) {
         months--;
 
-        const previousMonth = new Date(today.getFullYear(), today.getMonth(), 0);
+        const previousMonth = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            0
+        );
+
         days += previousMonth.getDate();
     }
 
@@ -48,9 +51,35 @@ ageForm.addEventListener("submit", function (event) {
         months += 12;
     }
 
-    yearsOutput.textContent = years;
-    monthsOutput.textContent = months;
-    daysOutput.textContent = days;
+    // Display age
+    yearsElement.textContent = years;
+    monthsElement.textContent = months;
+    daysElement.textContent = days;
 
-    resultBox.style.display = "block";
+    // Send birth date to backend
+    try {
+        const response = await fetch(
+            "http://localhost:5000/api/calculations",
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    birthDate: birthDateValue
+                })
+            }
+        );
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            console.error("Failed to save calculation:", data.message);
+            return;
+        }
+
+        console.log("Calculation saved:", data.message);
+    } catch (error) {
+        console.error("Could not connect to backend:", error);
+    }
 });
